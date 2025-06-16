@@ -20,7 +20,7 @@ func main() {
 	})
 	routes.SetUpRoutes(app)
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "https://library-backend-production-4c91.up.railway.app, http://localhost:5173", // frontend URL
+		AllowOrigins: "*", // frontend URL
 		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
 		AllowMethods: "GET, POST, PUT, DELETE, OPTIONS",
 	}))
