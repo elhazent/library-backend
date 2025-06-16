@@ -13,11 +13,17 @@ func GetAllKategori(c *fiber.Ctx) error {
 
 	if err := config.DB.Find(&kategori).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "Gagal mengambil data kategori",
+			"status":  "error",
+			"message": "Gagal mengambil data kategori",
+			"data":    nil,
 		})
 	}
 
-	return c.JSON(kategori)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status":  "success",
+		"message": "Berhasil mengambil data kategori",
+		"data":    kategori,
+	})
 }
 
 // ✅ POST /api/kategori
