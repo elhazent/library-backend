@@ -19,12 +19,7 @@ func main() {
 		return c.SendString("Perpustakaan API berjalan!")
 	})
 	routes.SetUpRoutes(app)
-	app.Use(cors.New(cors.Config{
-		AllowOrigins:     "http://127.0.0.1:5173, http://localhost:5173",
-		AllowHeaders:     "Origin, Content-Type, Accept, Authorization",
-		AllowMethods:     "GET, POST, PUT, DELETE, OPTIONS",
-		AllowCredentials: true,
-	}))
+	app.Use(cors.New())
 
 	app.Listen(":8080")
 

@@ -12,13 +12,38 @@ import (
 func Getbook(c *fiber.Ctx) error {
 	var books []models.Book
 
-	if err := config.DB.Preload("Category").Find(&books).Error; err != nil {
+	// Ambil query parameter page dan pageSize, default ke 1 dan 10 jika tidak ada
+	page := c.QueryInt("page", 1)
+	pageSize := c.QueryInt("pageSize", 10)
+	if page < 1 {
+		page = 1
+	}
+	if pageSize < 1 {
+		pageSize = 10
+	}
+
+	var total int64
+	config.DB.Model(&models.Book{}).Count(&total)
+
+	offset := (page - 1) * pageSize
+
+	if err := config.DB.Preload("Category").Limit(pageSize).Offset(offset).Find(&books).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "Gagal mengambil data buku",
+			"status":  "error",
+			"message": "Gagal mengambil data buku",
+			"error":   err.Error(),
 		})
 	}
 
-	return c.JSON(books)
+	return c.JSON(fiber.Map{
+		"status":     "success",
+		"message":    "Berhasil mengambil data buku",
+		"data":       books,
+		"page":       page,
+		"page_size":  pageSize,
+		"total":      total,
+		"total_page": (total + int64(pageSize) - 1) / int64(pageSize),
+	})
 }
 
 func GetbookByID(c *fiber.Ctx) error {
