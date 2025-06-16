@@ -70,19 +70,35 @@ func GetbookByID(c *fiber.Ctx) error {
 func Createbook(c *fiber.Ctx) error {
 	var book models.Book
 	if err := c.BodyParser(&book); err != nil {
-		return c.Status(400).JSON(fiber.Map{"error": "Format data salah"})
+		return c.Status(400).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Format data salah",
+			"data":    nil,
+		})
 	}
 
 	if err := config.DB.Create(&book).Error; err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Gagal membuat buku"})
+		return c.Status(500).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Gagal membuat buku",
+			"data":    nil,
+		})
 	}
 
 	// Ambil data buku beserta category setelah berhasil dibuat
 	if err := config.DB.Preload("Category").First(&book, book.ID).Error; err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Gagal mengambil data buku beserta kategori"})
+		return c.Status(500).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Gagal mengambil data buku beserta kategori",
+			"data":    nil,
+		})
 	}
 
-	return c.JSON(book)
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
+		"status":  "success",
+		"message": "Buku berhasil dibuat",
+		"data":    book,
+	})
 }
 
 func Updatebook(c *fiber.Ctx) error {
