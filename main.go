@@ -20,9 +20,10 @@ func main() {
 	})
 	routes.SetUpRoutes(app)
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*", // frontend URL
-		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
-		AllowMethods: "GET, POST, PUT, DELETE, OPTIONS",
+		AllowOrigins:     "*", // frontend URL
+		AllowHeaders:     "Origin, Content-Type, Accept, Authorization",
+		AllowMethods:     "GET, POST, PUT, DELETE, OPTIONS",
+		AllowCredentials: true,
 	}))
 
 	app.Listen(":8080")
