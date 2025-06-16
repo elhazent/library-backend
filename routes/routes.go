@@ -31,6 +31,9 @@ func SetUpRoutes(app *fiber.App) {
 	visit.Post("/", controllers.GetVisitHistory)
 	visit.Get("/:id", controllers.GetVisitByID)
 
+	category := api.Group("/categories", middleware.Protected())
+	category.Get("/", controllers.GetAllKategori)
+
 	//admin
 	visitAdmin := admin.Group("/visits")
 	visitAdmin.Post("/input", controllers.ProcessVisitInput)
@@ -51,8 +54,7 @@ func SetUpRoutes(app *fiber.App) {
 	bookAdmin.Put("/:id", controllers.Updatebook)
 	bookAdmin.Delete("/:id", controllers.Deletebook)
 
-	categoryAdmin := admin.Group("/category")
-	categoryAdmin.Get("/", controllers.GetAllKategori)
+	categoryAdmin := admin.Group("/categories")
 	categoryAdmin.Post("/", controllers.CreateKategori)
 
 }
