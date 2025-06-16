@@ -6,6 +6,7 @@ import (
 	"library-backend/routes"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 func main() {
@@ -18,6 +19,11 @@ func main() {
 		return c.SendString("Perpustakaan API berjalan!")
 	})
 	routes.SetUpRoutes(app)
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "https://library-backend-production-4c91.up.railway.app, http://localhost:5173", // frontend URL
+		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
+		AllowMethods: "GET, POST, PUT, DELETE, OPTIONS",
+	}))
 
 	app.Listen(":8080")
 
