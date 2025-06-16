@@ -36,13 +36,15 @@ func Getbook(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(fiber.Map{
-		"status":     "success",
-		"message":    "Berhasil mengambil data buku",
-		"data":       books,
-		"page":       page,
-		"page_size":  pageSize,
-		"total":      total,
-		"total_page": (total + int64(pageSize) - 1) / int64(pageSize),
+		"status":  "success",
+		"message": "Berhasil mengambil data buku",
+		"data": fiber.Map{
+			"data":       books,
+			"page":       page,
+			"page_size":  pageSize,
+			"total":      total,
+			"total_page": (total + int64(pageSize) - 1) / int64(pageSize),
+		},
 	})
 }
 
